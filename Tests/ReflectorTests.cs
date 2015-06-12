@@ -56,5 +56,38 @@ namespace Reflector.Tests
             Assert.AreEqual("50", dic["Age"]);
             Assert.AreEqual("2/3/1974", dic["BirthDate"]);
         }
+
+        [TestMethod]
+        public void Reflector_CreateInstance()
+        {
+            // arrange
+
+            // act
+            var component = Tools.Reflector.CreateInstance("Reflector.Business.BusinessComponent");
+
+            // assert
+            Assert.IsNotNull(component);
+        }
+
+        [TestMethod]
+        public void Reflector_Call()
+        {
+            // arrange
+            var person = new Person
+            {
+                FirstName = "John",
+                LastName = "Smith",
+                Age = 50,
+                BirthDate = new DateTime(1974, 2, 3)
+            };
+
+            // act
+            var component = Tools.Reflector.CreateInstance("Reflector.Business.BusinessComponent");
+            Tools.Reflector.CallMethod(component, "SubmitPerson", person);
+
+            // assert
+            Assert.IsTrue(((BusinessComponent)component).SubmitCalled);
+            Assert.IsNotNull(((BusinessComponent)component).Person);
+        }
     }
 }

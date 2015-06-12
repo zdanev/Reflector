@@ -6,6 +6,20 @@ namespace Reflector.Tools
 {
     public static class Reflector
     {
+        public static object CreateInstance(string className)
+        {
+            var type = Assembly.GetExecutingAssembly().GetType(className);
+            var result = Activator.CreateInstance(type);
+            return result;
+        }
+
+        public static void CallMethod(object component, string method, params object[] parameters)
+        {
+            var type = component.GetType();
+            var methodInfo = type.GetMethod(method);
+            methodInfo.Invoke(component, parameters);
+        }
+
         public static object ToObject(this IDictionary<string, string> input, string className)
         {
             var type = Assembly.GetExecutingAssembly().GetType(className);
